@@ -1,11 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Logistics & Product Pro</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Logistics & Product Pro</h1>
-  <p>My first GitHub Pages site.</p>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">LP</div>
+      <h1>Logistics & Product Pro</h1>
+    </div>
+    <div class="status">WAITING FOR FILES...</div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h2>Connect Your Datasets</h2>
+      <p>Upload all three CSV files to enable the master analytics view.</p>
+    </section>
+
+    <section class="upload-grid">
+      <div class="upload-card">
+        <h3>1. ORDERS FILE</h3>
+        <div class="icon">📄</div>
+        <button>Upload Orders</button>
+        <p>NO FILE</p>
+      </div>
+
+      <div class="upload-card">
+        <h3>2. ORDER ITEMS FILE</h3>
+        <div class="icon">🛍️</div>
+        <button>Upload Items</button>
+        <p>NO FILE</p>
+      </div>
+
+      <div class="upload-card">
+        <h3>3. PRODUCTS FILE</h3>
+        <div class="icon">📦</div>
+        <button>Upload Products</button>
+        <p>NO FILE</p>
+      </div>
+    </section>
+
+    <section class="cta-section">
+      <button class="generate-btn">Generate Analytics Dashboard</button>
+    </section>
+
+    <section class="dashboard">
+      <div class="summary-grid">
+        <div class="summary-card">Summary Card 1</div>
+        <div class="summary-card">Summary Card 2</div>
+        <div class="summary-card">Summary Card 3</div>
+        <div class="summary-card">Summary Card 4</div>
+      </div>
+
+      <div class="chart-grid">
+        <div class="chart-card">Trend Analysis</div>
+        <div class="chart-card">Top Product Categories</div>
+      </div>
+
+      <div class="heatmap-card">Customer Ordering Heatmap</div>
+    </section>
+  </main>
 </body>
 </html>
