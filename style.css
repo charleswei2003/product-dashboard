@@ -185,3 +185,19 @@ body {
     font-size: 36px;
   }
 }
+
+.generate-btn:disabled {
+  background: #dbe2ee;
+  color: #8ea0bb;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.status.connected {
+  color: #3d7a64;
+  background: #eef7f2;
+}
+
+.file-ready {
+  color: #0f9d58 !important;
+}
