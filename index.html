@@ -12,7 +12,7 @@
       <div class="logo">LP</div>
       <h1>Logistics & Product Pro</h1>
     </div>
-    <div class="status">WAITING FOR FILES...</div>
+    <div class="status" id="topStatus">WAITING FOR FILES...</div>
   </header>
 
   <main class="container">
@@ -25,27 +25,32 @@
       <div class="upload-card">
         <h3>1. ORDERS FILE</h3>
         <div class="icon">📄</div>
-        <button>Upload Orders</button>
-        <p>NO FILE</p>
+        <button id="ordersBtn">Upload Orders</button>
+        <p id="ordersStatus">NO FILE</p>
+        <input type="file" id="ordersInput" accept=".csv" hidden />
       </div>
 
       <div class="upload-card">
         <h3>2. ORDER ITEMS FILE</h3>
         <div class="icon">🛍️</div>
-        <button>Upload Items</button>
-        <p>NO FILE</p>
+        <button id="itemsBtn">Upload Items</button>
+        <p id="itemsStatus">NO FILE</p>
+        <input type="file" id="itemsInput" accept=".csv" hidden />
       </div>
 
       <div class="upload-card">
         <h3>3. PRODUCTS FILE</h3>
         <div class="icon">📦</div>
-        <button>Upload Products</button>
-        <p>NO FILE</p>
+        <button id="productsBtn">Upload Products</button>
+        <p id="productsStatus">NO FILE</p>
+        <input type="file" id="productsInput" accept=".csv" hidden />
       </div>
     </section>
 
     <section class="cta-section">
-      <button class="generate-btn">Generate Analytics Dashboard</button>
+      <button class="generate-btn" id="generateBtn" disabled>
+        Generate Analytics Dashboard
+      </button>
     </section>
 
     <section class="dashboard">
@@ -64,5 +69,7 @@
       <div class="heatmap-card">Customer Ordering Heatmap</div>
     </section>
   </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
