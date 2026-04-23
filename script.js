@@ -1,6 +1,3 @@
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="script.js"></script>
-
 const ordersBtn = document.getElementById("ordersBtn");
 const itemsBtn = document.getElementById("itemsBtn");
 const productsBtn = document.getElementById("productsBtn");
@@ -57,3 +54,6 @@ function updateOverallStatus() {
     generateBtn.disabled = true;
   }
 }
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="script.js"></script>
