@@ -13,7 +13,7 @@ const productsStatus = document.getElementById("productsStatus");
 const topStatus = document.getElementById("topStatus");
 const generateBtn = document.getElementById("generateBtn");
 
-const uploadedFiles = {
+const uploadedData = {
   orders: null,
   items: null,
   products: null
@@ -23,26 +23,41 @@ ordersBtn.addEventListener("click", () => ordersInput.click());
 itemsBtn.addEventListener("click", () => itemsInput.click());
 productsBtn.addEventListener("click", () => productsInput.click());
 
-ordersInput.addEventListener("change", () => handleFileSelect("orders", ordersInput, ordersStatus));
-itemsInput.addEventListener("change", () => handleFileSelect("items", itemsInput, itemsStatus));
-productsInput.addEventListener("change", () => handleFileSelect("products", productsInput, productsStatus));
+ordersInput.addEventListener("change", () => parseCsvFile("orders", ordersInput, ordersStatus));
+itemsInput.addEventListener("change", () => parseCsvFile("items", itemsInput, itemsStatus));
+productsInput.addEventListener("change", () => parseCsvFile("products", productsInput, productsStatus));
 
-function handleFileSelect(type, inputEl, statusEl) {
+function parseCsvFile(type, inputEl, statusEl) {
   const file = inputEl.files[0];
   if (!file) return;
 
-  uploadedFiles[type] = file;
-  statusEl.textContent = file.name;
-  statusEl.classList.add("file-ready");
+  statusEl.textContent = "Loading...";
 
-  updateOverallStatus();
+  Papa.parse(file, {
+    header: true,
+    skipEmptyLines: true,
+    complete: function(results) {
+      uploadedData[type] = results.data;
+
+      const rowCount = results.data.length;
+      statusEl.textContent = `${rowCount.toLocaleString()} ROWS`;
+      statusEl.classList.add("file-ready");
+
+      updateOverallStatus();
+      console.log(`${type} loaded:`, results.data);
+    },
+    error: function(error) {
+      statusEl.textContent = "FAILED TO LOAD";
+      console.error(`Error parsing ${type}:`, error);
+    }
+  });
 }
 
 function updateOverallStatus() {
   const allConnected =
-    uploadedFiles.orders &&
-    uploadedFiles.items &&
-    uploadedFiles.products;
+    uploadedData.orders &&
+    uploadedData.items &&
+    uploadedData.products;
 
   if (allConnected) {
     topStatus.textContent = "ALL DATASETS CONNECTED";
@@ -54,6 +69,3 @@ function updateOverallStatus() {
     generateBtn.disabled = true;
   }
 }
-
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="script.js"></script>
