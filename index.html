@@ -10,7 +10,10 @@
   <header class="topbar">
     <div class="brand">
       <div class="logo">LP</div>
-      <h1>Logistics & Product Pro</h1>
+      <div>
+        <h1>Logistics & Product Pro</h1>
+        <p class="brand-subtitle">Interactive e-commerce analytics dashboard</p>
+      </div>
     </div>
     <div class="status" id="topStatus">WAITING FOR FILES...</div>
   </header>
@@ -18,7 +21,7 @@
   <main class="container">
     <section class="hero">
       <h2>Connect Your Datasets</h2>
-      <p>Upload all three CSV files to enable the master analytics view.</p>
+      <p>Upload all three CSV files to generate the analytics dashboard.</p>
     </section>
 
     <section class="upload-grid">
@@ -53,42 +56,64 @@
       </button>
     </section>
 
-    <section class="dashboard">
-  <div class="summary-grid">
-    <div class="summary-card">
-      <div class="card-label">TOTAL PURCHASES</div>
-      <div class="card-value" id="totalPurchases">--</div>
-    </div>
+    <section class="dashboard" id="dashboardSection">
+      <div class="section-title-row">
+        <h3 class="section-title">Dashboard Overview</h3>
+        <p class="section-subtitle">Automatically generated from your uploaded files</p>
+      </div>
 
-    <div class="summary-card">
-      <div class="card-label">TOTAL CUSTOMERS</div>
-      <div class="card-value" id="totalCustomers">--</div>
-    </div>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="card-label">TOTAL PURCHASES</div>
+          <div class="card-value" id="totalPurchases">--</div>
+        </div>
 
-    <div class="summary-card">
-      <div class="card-label">TOTAL REVENUE</div>
-      <div class="card-value" id="totalRevenue">--</div>
-    </div>
+        <div class="summary-card">
+          <div class="card-label">TOTAL CUSTOMERS</div>
+          <div class="card-value" id="totalCustomers">--</div>
+        </div>
 
-    <div class="summary-card">
-      <div class="card-label">PRODUCT CATEGORIES</div>
-      <div class="card-value" id="totalCategories">--</div>
-    </div>
-  </div>
+        <div class="summary-card">
+          <div class="card-label">TOTAL REVENUE</div>
+          <div class="card-value" id="totalRevenue">--</div>
+        </div>
 
-  <div class="chart-grid">
-    <div class="chart-card">Trend Analysis</div>
-    <div class="chart-card">Top Product Categories</div>
-  </div>
+        <div class="summary-card">
+          <div class="card-label">PRODUCT CATEGORIES</div>
+          <div class="card-value" id="totalCategories">--</div>
+        </div>
+      </div>
 
-  <div class="heatmap-card">Customer Ordering Heatmap</div>
-</section>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <div class="chart-title">Order Volume by Month</div>
+          <div class="plot-box" id="orderVolumeChart"></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">Sales by Month</div>
+          <div class="plot-box" id="salesByMonthChart"></div>
+        </div>
+      </div>
+
+      <div class="chart-grid single-row">
+        <div class="chart-card full-width">
+          <div class="chart-title">Top 10 Product Categories</div>
+          <div class="plot-box tall-plot" id="topCategoriesChart"></div>
+        </div>
+      </div>
+
+      <div class="chart-grid single-row">
+        <div class="chart-card full-width">
+          <div class="chart-title">Customer Ordering Heatmap</div>
+          <div class="plot-box heatmap-plot" id="heatmapChart"></div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <script src="script.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <script src="script.js"></script>
-</body>
-</html>
 </body>
 </html>
