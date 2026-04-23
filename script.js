@@ -13,6 +13,11 @@ const productsStatus = document.getElementById("productsStatus");
 const topStatus = document.getElementById("topStatus");
 const generateBtn = document.getElementById("generateBtn");
 
+const totalPurchasesEl = document.getElementById("totalPurchases");
+const totalCustomersEl = document.getElementById("totalCustomers");
+const totalRevenueEl = document.getElementById("totalRevenue");
+const totalCategoriesEl = document.getElementById("totalCategories");
+
 const uploadedData = {
   orders: null,
   items: null,
@@ -26,6 +31,8 @@ productsBtn.addEventListener("click", () => productsInput.click());
 ordersInput.addEventListener("change", () => parseCsvFile("orders", ordersInput, ordersStatus));
 itemsInput.addEventListener("change", () => parseCsvFile("items", itemsInput, itemsStatus));
 productsInput.addEventListener("change", () => parseCsvFile("products", productsInput, productsStatus));
+
+generateBtn.addEventListener("click", generateDashboard);
 
 function parseCsvFile(type, inputEl, statusEl) {
   const file = inputEl.files[0];
@@ -45,6 +52,7 @@ function parseCsvFile(type, inputEl, statusEl) {
 
       updateOverallStatus();
       console.log(`${type} loaded:`, results.data);
+      console.log(`${type} columns:`, Object.keys(results.data[0] || {}));
     },
     error: function(error) {
       statusEl.textContent = "FAILED TO LOAD";
@@ -68,4 +76,50 @@ function updateOverallStatus() {
     topStatus.classList.remove("connected");
     generateBtn.disabled = true;
   }
+}
+
+function generateDashboard() {
+  const orders = uploadedData.orders || [];
+  const items = uploadedData.items || [];
+  const products = uploadedData.products || [];
+
+  const totalPurchases = getDistinctCount(orders, "order_id");
+  const totalCustomers = getDistinctCount(orders, "customer_id");
+  const totalRevenue = calculateTotalRevenue(items);
+  const totalCategories = getDistinctCount(products, "product_category_name");
+
+  totalPurchasesEl.textContent = formatInteger(totalPurchases);
+  totalCustomersEl.textContent = formatInteger(totalCustomers);
+  totalRevenueEl.textContent = formatCurrency(totalRevenue);
+  totalCategoriesEl.textContent = formatInteger(totalCategories);
+}
+
+function getDistinctCount(data, columnName) {
+  const values = data
+    .map(row => row[columnName])
+    .filter(value => value !== undefined && value !== null && value !== "");
+  return new Set(values).size;
+}
+
+function calculateTotalRevenue(items) {
+  let total = 0;
+
+  for (const row of items) {
+    const price = parseFloat(row.price || 0);
+    const freight = parseFloat(row.freight_value || row.shipping_charges || 0);
+    total += price + freight;
+  }
+
+  return total;
+}
+
+function formatInteger(value) {
+  return Number(value || 0).toLocaleString();
+}
+
+function formatCurrency(value) {
+  return `$${Number(value || 0).toLocaleString(undefined, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+  })}`;
 }
