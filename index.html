@@ -3,796 +3,1054 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Logistics & Product Pro</title>
-
+  <title>Saudi PE POC Dashboard</title>
   <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --blue: #2563eb;
+      --blue-light: #eff6ff;
+      --green: #059669;
+      --green-light: #ecfdf5;
+      --orange: #d97706;
+      --orange-light: #fffbeb;
+      --red: #dc2626;
+      --red-light: #fef2f2;
+      --purple: #7c3aed;
+      --purple-light: #f5f3ff;
+    }
+
     * {
       box-sizing: border-box;
-      margin: 0;
-      padding: 0;
     }
 
     body {
-      background: #f5f7fb;
-      font-family: Arial, sans-serif;
-      color: #14284b;
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
 
-    .topbar {
-      min-height: 82px;
-      background: white;
-      border-bottom: 1px solid #dfe5ef;
+    .app {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 32px;
-      gap: 20px;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: #111827;
+      color: white;
+      padding: 24px 18px;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      overflow-y: auto;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .logo {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
-      background: #4f46e5;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 20px;
-    }
-
-    .brand h1 {
-      font-size: 24px;
-      margin-bottom: 4px;
-    }
-
-    .brand-subtitle {
-      font-size: 13px;
-      color: #7b8da7;
-    }
-
-    .status {
-      background: #eef2f7;
-      color: #68809f;
-      padding: 10px 18px;
-      border-radius: 999px;
-      font-weight: 700;
-      font-size: 14px;
-      white-space: nowrap;
-    }
-
-    .status.connected {
-      color: #2d7f5e;
-      background: #eaf7f0;
-    }
-
-    .container {
-      width: 1280px;
-      max-width: calc(100% - 60px);
-      margin: 0 auto;
-      padding: 42px 0 60px;
-    }
-
-    .hero {
-      text-align: center;
-      margin-bottom: 36px;
-    }
-
-    .hero h2 {
-      font-size: 52px;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
       font-size: 18px;
-      color: #60728f;
-    }
-
-    .upload-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-      margin-bottom: 32px;
-    }
-
-    .upload-card {
-      background: white;
-      border: 2px dashed #d8e1ee;
-      border-radius: 24px;
-      min-height: 250px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      text-align: center;
-      padding: 24px;
-    }
-
-    .upload-card h3 {
-      font-size: 15px;
-      color: #8798b4;
-      letter-spacing: 0.4px;
-    }
-
-    .icon {
-      font-size: 40px;
-    }
-
-    .upload-card button {
-      border: none;
-      background: #eef1ff;
-      color: #4f46e5;
-      padding: 14px 24px;
-      border-radius: 16px;
-      font-size: 16px;
       font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: #9ca3af;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      border: none;
+      background: transparent;
+      color: #d1d5db;
+      text-align: left;
+      padding: 11px 12px;
+      border-radius: 10px;
       cursor: pointer;
-    }
-
-    .upload-card button:hover {
-      opacity: 0.92;
-    }
-
-    .upload-card p {
-      color: #94a3b8;
-      font-weight: 700;
+      margin-bottom: 6px;
       font-size: 14px;
-      word-break: break-word;
     }
 
-    .file-ready {
-      color: #0f9d58 !important;
-    }
-
-    .cta-section {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 14px;
-    }
-
-    .generate-btn {
-      border: none;
-      background: #4f46e5;
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: #1f2937;
       color: white;
-      font-size: 20px;
-      font-weight: 700;
-      padding: 20px 42px;
-      border-radius: 18px;
-      cursor: pointer;
-      box-shadow: 0 10px 24px rgba(79, 70, 229, 0.2);
     }
 
-    .generate-btn:disabled {
-      background: #dbe2ee;
-      color: #8ea0bb;
-      cursor: not-allowed;
-      box-shadow: none;
+    .main {
+      margin-left: 260px;
+      padding: 28px;
+      width: calc(100% - 260px);
     }
 
-    .message-box {
-      text-align: center;
-      margin: 0 0 24px;
-      font-size: 14px;
-      font-weight: 700;
-      color: #6b7f99;
-      min-height: 20px;
-    }
-
-    .message-box.error {
-      color: #c0392b;
-    }
-
-    .message-box.success {
-      color: #1e8e5a;
-    }
-
-    .dashboard {
-      display: grid;
-      gap: 24px;
-    }
-
-    .section-title-row {
+    .topbar {
       display: flex;
-      align-items: flex-end;
       justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 4px;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 22px;
     }
 
-    .section-title {
+    .title h1 {
+      margin: 0;
       font-size: 28px;
     }
 
-    .section-subtitle {
-      color: #7c90ad;
+    .title p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    select, button.fake-action {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: white;
+      color: var(--text);
       font-size: 14px;
     }
 
-    .summary-grid {
+    button.fake-action {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+      cursor: pointer;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 22px;
+      gap: 16px;
     }
 
-    .summary-card,
-    .chart-card {
-      background: white;
-      border: 1px solid #e6ebf2;
-      border-radius: 24px;
-      padding: 24px;
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .card-label {
-      font-size: 13px;
-      font-weight: 800;
-      color: #8fa1bd;
-      margin-bottom: 14px;
-      letter-spacing: 1px;
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
-    .card-value {
-      font-size: 42px;
-      font-weight: 800;
-      color: #14284b;
-      line-height: 1.1;
+    .grid-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
-    .chart-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 22px;
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
     }
 
-    .chart-grid.single-row {
-      grid-template-columns: 1fr;
-    }
-
-    .full-width {
-      width: 100%;
-    }
-
-    .chart-title {
+    .card h2 {
+      margin: 0 0 12px;
       font-size: 18px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .metric {
+      font-size: 28px;
       font-weight: 800;
-      color: #203354;
-      margin-bottom: 12px;
+      margin: 8px 0 4px;
     }
 
-    .plot-box {
+    .metric-sub {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-right: 6px;
+      white-space: nowrap;
+    }
+
+    .blue { background: var(--blue-light); color: var(--blue); }
+    .green { background: var(--green-light); color: var(--green); }
+    .orange { background: var(--orange-light); color: var(--orange); }
+    .red { background: var(--red-light); color: var(--red); }
+    .purple { background: var(--purple-light); color: var(--purple); }
+
+    table {
       width: 100%;
-      height: 360px;
+      border-collapse: collapse;
+      font-size: 13px;
     }
 
-    .tall-plot {
-      height: 420px;
+    th, td {
+      padding: 11px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
     }
 
-    .heatmap-plot {
-      height: 420px;
+    th {
+      color: #374151;
+      background: #f9fafb;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
     }
 
-    @media (max-width: 1100px) {
-      .upload-grid,
-      .summary-grid,
-      .chart-grid {
+    tr:hover td {
+      background: #fafafa;
+    }
+
+    .section-title {
+      margin: 24px 0 12px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .flow-step {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      min-width: 150px;
+      flex: 1;
+    }
+
+    .flow-step strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .flow-step span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .arrow {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .bar-wrap {
+      margin: 10px 0 14px;
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    .bar-bg {
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--blue);
+    }
+
+    .note {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .mock-box {
+      border: 1px dashed #cbd5e1;
+      background: #f8fafc;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .timeline {
+      border-left: 3px solid var(--line);
+      padding-left: 16px;
+    }
+
+    .timeline-item {
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .timeline-item:before {
+      content: "";
+      position: absolute;
+      left: -25px;
+      top: 3px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .timeline-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .timeline-item span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      .app {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 18px;
+      }
+
+      .grid-2, .grid-3, .grid-4 {
         grid-template-columns: 1fr;
       }
 
-      .hero h2 {
-        font-size: 38px;
-      }
-
-      .section-title-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .card-value {
-        font-size: 34px;
-      }
-    }
-
-    @media (max-width: 700px) {
       .topbar {
-        flex-direction: column;
-        align-items: flex-start;
+        display: block;
       }
 
-      .container {
-        max-width: calc(100% - 28px);
-      }
-
-      .hero h2 {
-        font-size: 32px;
+      .controls {
+        margin-top: 14px;
       }
     }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">LP</div>
-      <div>
-        <h1>Logistics & Product Pro</h1>
-        <p class="brand-subtitle">Interactive e-commerce analytics dashboard</p>
-      </div>
-    </div>
-    <div class="status" id="topStatus">WAITING FOR FILES...</div>
-  </header>
-
-  <main class="container">
-    <section class="hero">
-      <h2>Connect Your Datasets</h2>
-      <p>Upload all three CSV files to generate the analytics dashboard.</p>
-    </section>
-
-    <section class="upload-grid">
-      <div class="upload-card">
-        <h3>1. ORDERS FILE</h3>
-        <div class="icon">📄</div>
-        <button id="ordersBtn" type="button">Upload Orders</button>
-        <p id="ordersStatus">NO FILE</p>
-        <input type="file" id="ordersInput" accept=".csv" hidden />
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">PE Country Template</div>
+      <div class="brand-sub">
+        Static POC demo for reusable country pharmacoeconomic workflow.
       </div>
 
-      <div class="upload-card">
-        <h3>2. ORDER ITEMS FILE</h3>
-        <div class="icon">🛍️</div>
-        <button id="itemsBtn" type="button">Upload Items</button>
-        <p id="itemsStatus">NO FILE</p>
-        <input type="file" id="itemsInput" accept=".csv" hidden />
-      </div>
+      <button class="nav-btn active" data-page="overview">1. Overview Dashboard</button>
+      <button class="nav-btn" data-page="parameters">2. Parameter Table</button>
+      <button class="nav-btn" data-page="loop">3. POC Loop</button>
+      <button class="nav-btn" data-page="model">4. Model Output</button>
+      <button class="nav-btn" data-page="sensitivity">5. Sensitivity</button>
+      <button class="nav-btn" data-page="negotiation">6. Pricing & Negotiation</button>
+      <button class="nav-btn" data-page="review">7. Human Review Queue</button>
+      <button class="nav-btn" data-page="trace">8. Trace Back</button>
+    </aside>
 
-      <div class="upload-card">
-        <h3>3. PRODUCTS FILE</h3>
-        <div class="icon">📦</div>
-        <button id="productsBtn" type="button">Upload Products</button>
-        <p id="productsStatus">NO FILE</p>
-        <input type="file" id="productsInput" accept=".csv" hidden />
-      </div>
-    </section>
-
-    <section class="cta-section">
-      <button class="generate-btn" id="generateBtn" type="button" disabled>
-        Generate Analytics Dashboard
-      </button>
-    </section>
-
-    <p id="messageBox" class="message-box"></p>
-
-    <section class="dashboard" id="dashboardSection">
-      <div class="section-title-row">
-        <h3 class="section-title">Dashboard Overview</h3>
-        <p class="section-subtitle">Automatically generated from your uploaded files</p>
-      </div>
-
-      <div class="summary-grid">
-        <div class="summary-card">
-          <div class="card-label">TOTAL PURCHASES</div>
-          <div class="card-value" id="totalPurchases">--</div>
+    <main class="main">
+      <div class="topbar">
+        <div class="title">
+          <h1>Saudi Eque-cel PE POC</h1>
+          <p>
+            A static demo of how the reusable country template could look: key parameters, data sourcing,
+            ICER/BIA output, sensitivity, negotiation scenarios, and human-in-the-loop validation.
+          </p>
         </div>
 
-        <div class="summary-card">
-          <div class="card-label">TOTAL CUSTOMERS</div>
-          <div class="card-value" id="totalCustomers">--</div>
-        </div>
+        <div class="controls">
+          <select id="countrySelect">
+            <option>Saudi Arabia</option>
+            <option>Singapore</option>
+            <option>China</option>
+            <option>UAE</option>
+            <option>Australia</option>
+          </select>
 
-        <div class="summary-card">
-          <div class="card-label">TOTAL REVENUE</div>
-          <div class="card-value" id="totalRevenue">--</div>
-        </div>
+          <select>
+            <option>RRMM / Eque-cel</option>
+            <option>MM / Comparator Basket</option>
+            <option>Future Indication</option>
+          </select>
 
-        <div class="summary-card">
-          <div class="card-label">PRODUCT CATEGORIES</div>
-          <div class="card-value" id="totalCategories">--</div>
+          <button class="fake-action" onclick="alert('Demo only: this would trigger AI data refresh + human review workflow.')">
+            Refresh Data
+          </button>
         </div>
       </div>
 
-      <div class="chart-grid">
-        <div class="chart-card">
-          <div class="chart-title">Order Volume by Month</div>
-          <div class="plot-box" id="orderVolumeChart"></div>
+      <!-- PAGE 1 -->
+      <section id="overview" class="page active">
+        <div class="grid grid-4">
+          <div class="card">
+            <span class="badge red">Not cost-effective</span>
+            <div class="metric">402,719</div>
+            <div class="metric-sub">Base ICER, SAR / QALY</div>
+          </div>
+
+          <div class="card">
+            <span class="badge orange">Threshold price</span>
+            <div class="metric">668K</div>
+            <div class="metric-sub">SAR price to pass 215K WTP</div>
+          </div>
+
+          <div class="card">
+            <span class="badge purple">Budget impact</span>
+            <div class="metric">318M</div>
+            <div class="metric-sub">5-year gross BIA, SAR</div>
+          </div>
+
+          <div class="card">
+            <span class="badge green">Data status</span>
+            <div class="metric">10%</div>
+            <div class="metric-sub">Saudi-local confirmed parameters</div>
+          </div>
         </div>
 
-        <div class="chart-card">
-          <div class="chart-title">Sales by Month</div>
-          <div class="plot-box" id="salesByMonthChart"></div>
+        <div class="section-title">Key Parameters</div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Current Value</th>
+                <th>Status</th>
+                <th>Owner / Source</th>
+                <th>Impact</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Eque-cel price</td>
+                <td>CNY 2.35M / SAR 1.23M</td>
+                <td><span class="badge orange">Business assumption</span></td>
+                <td>Tianyi / Pricing</td>
+                <td>ICER, BIA, pricing ladder</td>
+              </tr>
+              <tr>
+                <td>WTP threshold</td>
+                <td>SAR 215K / QALY</td>
+                <td><span class="badge orange">Scenario</span></td>
+                <td>Market Access</td>
+                <td>Cost-effectiveness conclusion</td>
+              </tr>
+              <tr>
+                <td>Comparator basket</td>
+                <td>SG basket inherited</td>
+                <td><span class="badge red">Need Saudi validation</span></td>
+                <td>KOL / Clinical / MA</td>
+                <td>ICER</td>
+              </tr>
+              <tr>
+                <td>Saudi eligible population</td>
+                <td>Funnel estimate</td>
+                <td><span class="badge red">Need validation</span></td>
+                <td>Epi source + KOL</td>
+                <td>BIA</td>
+              </tr>
+              <tr>
+                <td>FX rate</td>
+                <td>CNY to SAR</td>
+                <td><span class="badge green">Online retrievable</span></td>
+                <td>Official / financial source</td>
+                <td>Price conversion</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
 
-      <div class="chart-grid single-row">
-        <div class="chart-card full-width">
-          <div class="chart-title">Top 10 Product Categories</div>
-          <div class="plot-box tall-plot" id="topCategoriesChart"></div>
+        <div class="section-title">What the number says</div>
+        <div class="card">
+          <p class="note">
+            At the current assumed price, eque-cel improves QALYs compared with SoC, but the incremental
+            cost is too high relative to the SAR 215K/QALY threshold. The result suggests a strong need for
+            pricing scenarios, risk-sharing, and Saudi-specific comparator validation before using the model
+            for payer negotiation.
+          </p>
         </div>
-      </div>
+      </section>
 
-      <div class="chart-grid single-row">
-        <div class="chart-card full-width">
-          <div class="chart-title">Customer Ordering Heatmap</div>
-          <div class="plot-box heatmap-plot" id="heatmapChart"></div>
+      <!-- PAGE 2 -->
+      <section id="parameters" class="page">
+        <div class="card">
+          <h2>Parameter Control Center</h2>
+          <p class="note">
+            This page represents the enhanced parameter table. The goal is not only to store values,
+            but also to track source, replace/keep decision, automation level, owner, and approval status.
+          </p>
         </div>
-      </div>
-    </section>
-  </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+        <div class="section-title">Enhanced Parameter Table</div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Category</th>
+                <th>Replace / Keep</th>
+                <th>Online Reliable?</th>
+                <th>Company Has Data?</th>
+                <th>Hard to Get?</th>
+                <th>Automation Level</th>
+                <th>Approval</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>FX rate</td>
+                <td>Price basis</td>
+                <td>Replace by country</td>
+                <td>Yes</td>
+                <td>No need</td>
+                <td>No</td>
+                <td><span class="badge green">Auto-fill</span></td>
+                <td>Approved</td>
+              </tr>
+              <tr>
+                <td>Target net price</td>
+                <td>Pricing</td>
+                <td>Replace by country</td>
+                <td>No</td>
+                <td>Yes</td>
+                <td>Yes</td>
+                <td><span class="badge red">Manual only</span></td>
+                <td>Pending Tianyi</td>
+              </tr>
+              <tr>
+                <td>Comparator basket</td>
+                <td>SoC</td>
+                <td>Replace by country</td>
+                <td>Partial</td>
+                <td>Maybe</td>
+                <td>Yes</td>
+                <td><span class="badge orange">AI + Human</span></td>
+                <td>Pending KOL</td>
+              </tr>
+              <tr>
+                <td>Utility values</td>
+                <td>QALY</td>
+                <td>Keep if no local source</td>
+                <td>Partial</td>
+                <td>Maybe</td>
+                <td>Medium</td>
+                <td><span class="badge orange">AI extract + review</span></td>
+                <td>Candidate</td>
+              </tr>
+              <tr>
+                <td>PFS / OS model logic</td>
+                <td>Model structure</td>
+                <td>Keep</td>
+                <td>N/A</td>
+                <td>Yes</td>
+                <td>No</td>
+                <td><span class="badge blue">Locked formula</span></td>
+                <td>Model owner</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PAGE 3 -->
+      <section id="loop" class="page">
+        <div class="card">
+          <h2>Reusable POC Loop</h2>
+          <p class="note">
+            The reusable template keeps the model logic stable, while replacing country-specific data.
+            AI handles repetitive search and extraction work. Humans confirm high-risk assumptions.
+          </p>
+        </div>
+
+        <div class="section-title">Workflow</div>
+        <div class="flow">
+          <div class="flow-step">
+            <strong>1. Select country</strong>
+            <span>Choose Saudi, UAE, Singapore, Australia, etc.</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="flow-step">
+            <strong>2. AI country scan</strong>
+            <span>Search payer, HTA, epi, price, guideline, comparator.</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="flow-step">
+            <strong>3. Candidate parameters</strong>
+            <span>AI extracts values into staging table with source snippets.</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="flow-step">
+            <strong>4. Human review</strong>
+            <span>Pricing, Market Access, Clinical, KOL approve key assumptions.</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="flow-step">
+            <strong>5. Run model</strong>
+            <span>XLSM / Python calculates ICER, BIA, sensitivity.</span>
+          </div>
+          <div class="arrow">→</div>
+          <div class="flow-step">
+            <strong>6. Report output</strong>
+            <span>Generate one-page summary and negotiation strategy.</span>
+          </div>
+        </div>
+
+        <div class="section-title">Keep vs Replace</div>
+        <div class="grid grid-2">
+          <div class="card">
+            <h2>Keep</h2>
+            <p class="note">
+              ICER calculation logic, PFS/PD/Dead model structure, cost categories,
+              QALY framework, DSA/PSA framework, BIA funnel structure, report template.
+            </p>
+          </div>
+          <div class="card">
+            <h2>Replace by Country</h2>
+            <p class="note">
+              Price, FX, WTP threshold, SoC basket, local costs, resource use, epidemiology,
+              uptake, payer coverage, risk-sharing, KOL-confirmed treatment pathway.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 4 -->
+      <section id="model" class="page">
+        <div class="grid grid-3">
+          <div class="card">
+            <span class="badge blue">Cost</span>
+            <div class="metric">1.75M</div>
+            <div class="metric-sub">Eque-cel total cost, SAR</div>
+          </div>
+          <div class="card">
+            <span class="badge blue">Cost</span>
+            <div class="metric">0.55M</div>
+            <div class="metric-sub">SoC total cost, SAR</div>
+          </div>
+          <div class="card">
+            <span class="badge red">ICER</span>
+            <div class="metric">402,719</div>
+            <div class="metric-sub">SAR / QALY</div>
+          </div>
+        </div>
+
+        <div class="section-title">Draft ICER / Cost Table</div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Output</th>
+                <th>Eque-cel</th>
+                <th>SoC</th>
+                <th>Incremental</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total cost</td>
+                <td>1,747,192</td>
+                <td>545,290</td>
+                <td>1,201,902</td>
+              </tr>
+              <tr>
+                <td>Total QALY</td>
+                <td>4.65</td>
+                <td>1.67</td>
+                <td>2.98</td>
+              </tr>
+              <tr>
+                <td>Total LY</td>
+                <td>5.73</td>
+                <td>2.12</td>
+                <td>3.61</td>
+              </tr>
+              <tr>
+                <td>ICER / ICUR</td>
+                <td>-</td>
+                <td>-</td>
+                <td><strong>402,719 SAR / QALY</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-title">BIA Snapshot</div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Value</th>
+                <th>Interpretation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>5-year treated patients</td>
+                <td>265</td>
+                <td>Driven by epi funnel and uptake assumption.</td>
+              </tr>
+              <tr>
+                <td>5-year gross BIA</td>
+                <td>~318M SAR</td>
+                <td>Before rebate or risk-sharing.</td>
+              </tr>
+              <tr>
+                <td>Risk-sharing net BIA</td>
+                <td>~247M SAR</td>
+                <td>After assumed payer contracting mechanism.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PAGE 5 -->
+      <section id="sensitivity" class="page">
+        <div class="card">
+          <h2>Which inputs moved ICER most?</h2>
+          <p class="note">
+            This page shows a demo DSA view. In the real workflow, Python can change one parameter at a time,
+            recalculate the XLSM, read the new ICER, and rank the parameters by impact.
+          </p>
+        </div>
+
+        <div class="section-title">Tornado-style Ranking</div>
+        <div class="card">
+          <div class="bar-wrap">
+            <div class="bar-label"><span>Eque-cel net price</span><strong>High impact</strong></div>
+            <div class="bar-bg"><div class="bar-fill" style="width: 96%;"></div></div>
+          </div>
+
+          <div class="bar-wrap">
+            <div class="bar-label"><span>Comparator basket / SoC mix</span><strong>High impact</strong></div>
+            <div class="bar-bg"><div class="bar-fill" style="width: 82%;"></div></div>
+          </div>
+
+          <div class="bar-wrap">
+            <div class="bar-label"><span>OS extrapolation</span><strong>Medium-high impact</strong></div>
+            <div class="bar-bg"><div class="bar-fill" style="width: 68%;"></div></div>
+          </div>
+
+          <div class="bar-wrap">
+            <div class="bar-label"><span>Utility values</span><strong>Medium impact</strong></div>
+            <div class="bar-bg"><div class="bar-fill" style="width: 50%;"></div></div>
+          </div>
+
+          <div class="bar-wrap">
+            <div class="bar-label"><span>Hospital / CRS management cost</span><strong>Medium impact</strong></div>
+            <div class="bar-bg"><div class="bar-fill" style="width: 42%;"></div></div>
+          </div>
+        </div>
+
+        <div class="section-title">Method</div>
+        <div class="card">
+          <p class="note">
+            For each DSA-eligible parameter, the system runs the model twice: once at the lower bound
+            and once at the upper bound. The ICER movement is calculated and ranked. Human reviewers define
+            which parameters are eligible and whether the ranges are clinically and commercially reasonable.
+          </p>
+        </div>
+      </section>
+
+      <!-- PAGE 6 -->
+      <section id="negotiation" class="page">
+        <div class="card">
+          <h2>Pricing & Negotiation Strategy Layer</h2>
+          <p class="note">
+            This is the business analyst layer added on top of ICER + BIA.
+            It turns model outputs into payer negotiation options.
+          </p>
+        </div>
+
+        <div class="section-title">Pricing Ladder</div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Scenario</th>
+                <th>WTP Threshold</th>
+                <th>Max Acceptable Price</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Conservative</td>
+                <td>150K SAR / QALY</td>
+                <td>Lower than 668K</td>
+                <td>Requires major discount or strong risk-sharing.</td>
+              </tr>
+              <tr>
+                <td>Base flex</td>
+                <td>215K SAR / QALY</td>
+                <td>~668K SAR</td>
+                <td>Current price needs reduction to pass threshold.</td>
+              </tr>
+              <tr>
+                <td>Orphan-flex</td>
+                <td>300K SAR / QALY</td>
+                <td>Higher price possible</td>
+                <td>Need orphan / unmet need argument.</td>
+              </tr>
+              <tr>
+                <td>Premium value case</td>
+                <td>400K SAR / QALY</td>
+                <td>Close to current range</td>
+                <td>Requires strong long-term survival evidence.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-title">Negotiation Scenario Matrix</div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Strategy</th>
+                <th>Price</th>
+                <th>Risk-sharing</th>
+                <th>Payer Message</th>
+                <th>Commercial Implication</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Premium launch</td>
+                <td>High</td>
+                <td>Low</td>
+                <td>Best-in-class clinical value</td>
+                <td>Harder access, higher margin</td>
+              </tr>
+              <tr>
+                <td>Value-based access</td>
+                <td>Medium-high</td>
+                <td>Outcome-based</td>
+                <td>Payer risk is controlled</td>
+                <td>Most balanced option</td>
+              </tr>
+              <tr>
+                <td>Budget-first access</td>
+                <td>Medium-low</td>
+                <td>Budget cap</td>
+                <td>Predictable annual spend</td>
+                <td>Better access, lower net price</td>
+              </tr>
+              <tr>
+                <td>Evidence-first strategy</td>
+                <td>Scenario-based</td>
+                <td>Conditional</td>
+                <td>More data before full reimbursement</td>
+                <td>Useful if uncertainty is high</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PAGE 7 -->
+      <section id="review" class="page">
+        <div class="card">
+          <h2>Human Review Queue</h2>
+          <p class="note">
+            AI can search and extract candidate data, but high-risk assumptions need human sign-off.
+            This queue shows what needs review and who might own it.
+          </p>
+        </div>
+
+        <div class="section-title">Pending Review Items</div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Why Human Needed</th>
+                <th>Suggested Owner</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Saudi target net price</td>
+                <td>Commercial confidential assumption</td>
+                <td>Tianyi / Pricing</td>
+                <td><span class="badge red">Pending</span></td>
+              </tr>
+              <tr>
+                <td>Comparator basket</td>
+                <td>Need Saudi real-world treatment mix</td>
+                <td>KOL / Clinical</td>
+                <td><span class="badge orange">In review</span></td>
+              </tr>
+              <tr>
+                <td>Risk-sharing mechanism</td>
+                <td>Payer negotiation assumption</td>
+                <td>Market Access</td>
+                <td><span class="badge red">Pending</span></td>
+              </tr>
+              <tr>
+                <td>CAR-T pathway resource use</td>
+                <td>Need local hospital workflow</td>
+                <td>KOL / Medical</td>
+                <td><span class="badge orange">In review</span></td>
+              </tr>
+              <tr>
+                <td>Saudi uptake curve</td>
+                <td>Depends on access, capacity, payer coverage</td>
+                <td>BD / Commercial</td>
+                <td><span class="badge red">Pending</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="section-title">Review Action Demo</div>
+        <div class="mock-box">
+          <strong>Example:</strong> AI found three candidate sources for Saudi RRMM epidemiology.
+          Human reviewer selects one as approved, rejects two low-confidence sources, and the approved value
+          is pushed to the live parameter table.
+        </div>
+      </section>
+
+      <!-- PAGE 8 -->
+      <section id="trace" class="page">
+        <div class="card">
+          <h2>Trace Back / Audit Trail</h2>
+          <p class="note">
+            Every final output should be traceable back to parameter, source, owner, and Excel cell.
+            This makes the model explainable and fixable.
+          </p>
+        </div>
+
+        <div class="section-title">Example Trace: ICER moved from 402K to 310K</div>
+        <div class="card">
+          <div class="timeline">
+            <div class="timeline-item">
+              <strong>Output changed</strong>
+              <span>ICER decreased from 402,719 to 310,000 SAR/QALY.</span>
+            </div>
+            <div class="timeline-item">
+              <strong>Driver identified</strong>
+              <span>ΔCost decreased due to lower eque-cel net price.</span>
+            </div>
+            <div class="timeline-item">
+              <strong>Parameter traced</strong>
+              <span>Parameter ID: eque_cel_net_price_saudi.</span>
+            </div>
+            <div class="timeline-item">
+              <strong>Source checked</strong>
+              <span>Updated from Pricing Scenario v2, reviewed by Tianyi.</span>
+            </div>
+            <div class="timeline-item">
+              <strong>Cell mapping</strong>
+              <span>Written to Cost sheet / model named range: price_eq.</span>
+            </div>
+            <div class="timeline-item">
+              <strong>Human fix</strong>
+              <span>If wrong, reviewer edits parameter table, not Results sheet. Model reruns automatically.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title">Audit Metadata</div>
+        <div class="card">
+          <table>
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Source</th>
+                <th>Reviewer</th>
+                <th>Cell</th>
+                <th>Last Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>eque_cel_net_price_saudi</td>
+                <td>Pricing Scenario v2</td>
+                <td>Tianyi</td>
+                <td>Cost!D12 / price_eq</td>
+                <td>2026-06-30</td>
+              </tr>
+              <tr>
+                <td>wtp_threshold_saudi</td>
+                <td>Market Access assumption</td>
+                <td>MA lead</td>
+                <td>Parameter Table!B18</td>
+                <td>2026-06-30</td>
+              </tr>
+              <tr>
+                <td>soc_basket_saudi</td>
+                <td>KOL pending</td>
+                <td>Clinical lead</td>
+                <td>Comparator_SoC</td>
+                <td>Pending</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script>
-    const ordersBtn = document.getElementById("ordersBtn");
-    const itemsBtn = document.getElementById("itemsBtn");
-    const productsBtn = document.getElementById("productsBtn");
+    const buttons = document.querySelectorAll(".nav-btn");
+    const pages = document.querySelectorAll(".page");
 
-    const ordersInput = document.getElementById("ordersInput");
-    const itemsInput = document.getElementById("itemsInput");
-    const productsInput = document.getElementById("productsInput");
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const pageId = btn.getAttribute("data-page");
 
-    const ordersStatus = document.getElementById("ordersStatus");
-    const itemsStatus = document.getElementById("itemsStatus");
-    const productsStatus = document.getElementById("productsStatus");
+        buttons.forEach((b) => b.classList.remove("active"));
+        pages.forEach((p) => p.classList.remove("active"));
 
-    const topStatus = document.getElementById("topStatus");
-    const generateBtn = document.getElementById("generateBtn");
-    const messageBox = document.getElementById("messageBox");
-
-    const totalPurchasesEl = document.getElementById("totalPurchases");
-    const totalCustomersEl = document.getElementById("totalCustomers");
-    const totalRevenueEl = document.getElementById("totalRevenue");
-    const totalCategoriesEl = document.getElementById("totalCategories");
-
-    const uploadedData = {
-      orders: null,
-      items: null,
-      products: null
-    };
-
-    ordersBtn.addEventListener("click", () => ordersInput.click());
-    itemsBtn.addEventListener("click", () => itemsInput.click());
-    productsBtn.addEventListener("click", () => productsInput.click());
-
-    ordersInput.addEventListener("change", () => parseCsvFile("orders", ordersInput, ordersStatus));
-    itemsInput.addEventListener("change", () => parseCsvFile("items", itemsInput, itemsStatus));
-    productsInput.addEventListener("change", () => parseCsvFile("products", productsInput, productsStatus));
-
-    generateBtn.addEventListener("click", generateDashboard);
-
-    function setMessage(text, type = "") {
-      messageBox.textContent = text;
-      messageBox.className = "message-box";
-      if (type) messageBox.classList.add(type);
-    }
-
-    function parseCsvFile(type, inputEl, statusEl) {
-      const file = inputEl.files[0];
-      if (!file) return;
-
-      statusEl.textContent = "Loading...";
-
-      Papa.parse(file, {
-        header: true,
-        skipEmptyLines: true,
-        worker: true,
-        complete: function(results) {
-          uploadedData[type] = results.data;
-          const rowCount = results.data.length;
-          statusEl.textContent = rowCount.toLocaleString() + " ROWS";
-          statusEl.classList.add("file-ready");
-          updateOverallStatus();
-
-          console.log(type + " loaded sample:", results.data.slice(0, 3));
-          console.log(type + " columns:", Object.keys(results.data[0] || {}));
-        },
-        error: function(error) {
-          statusEl.textContent = "FAILED TO LOAD";
-          console.error("Error parsing " + type + ":", error);
-          setMessage("Failed to load " + type + " file. Check console for details.", "error");
-        }
+        btn.classList.add("active");
+        document.getElementById(pageId).classList.add("active");
       });
-    }
+    });
 
-    function updateOverallStatus() {
-      const allConnected =
-        uploadedData.orders &&
-        uploadedData.items &&
-        uploadedData.products;
-
-      if (allConnected) {
-        topStatus.textContent = "ALL DATASETS CONNECTED";
-        topStatus.classList.add("connected");
-        generateBtn.disabled = false;
-        setMessage("");
-      } else {
-        topStatus.textContent = "WAITING FOR FILES...";
-        topStatus.classList.remove("connected");
-        generateBtn.disabled = true;
-      }
-    }
-
-    function generateDashboard() {
-      try {
-        if (typeof Plotly === "undefined") {
-          throw new Error("Plotly failed to load. Check your internet connection or CDN access.");
-        }
-
-        const orders = uploadedData.orders || [];
-        const items = uploadedData.items || [];
-        const products = uploadedData.products || [];
-
-        if (!orders.length || !items.length || !products.length) {
-          throw new Error("Please upload all three CSV files first.");
-        }
-
-        generateBtn.disabled = true;
-        setMessage("Generating charts...");
-
-        setTimeout(() => {
-          try {
-            updateKpis(orders, items, products);
-
-            const orderMonthMap = buildMonthlyOrderVolume(orders);
-            const salesMonthMap = buildMonthlySales(orders, items);
-            const topCategoryMap = buildTopCategories(items, products);
-            const heatmapData = buildOrderingHeatmap(orders);
-
-            renderOrderVolumeChart(orderMonthMap);
-            renderSalesByMonthChart(salesMonthMap);
-            renderTopCategoriesChart(topCategoryMap);
-            renderHeatmapChart(heatmapData);
-
-            setMessage("Dashboard generated successfully.", "success");
-            generateBtn.disabled = false;
-          } catch (innerError) {
-            console.error("Chart generation error:", innerError);
-            setMessage("Chart generation failed: " + innerError.message, "error");
-            generateBtn.disabled = false;
-          }
-        }, 50);
-      } catch (error) {
-        console.error("Generate error:", error);
-        setMessage(error.message, "error");
-        generateBtn.disabled = false;
-      }
-    }
-
-    function updateKpis(orders, items, products) {
-      const totalPurchases = getDistinctCount(orders, "order_id");
-      const totalCustomers = getDistinctCount(orders, "customer_id");
-      const totalRevenue = calculateTotalRevenue(items);
-      const totalCategories = getDistinctCount(products, "product_category_name");
-
-      totalPurchasesEl.textContent = formatInteger(totalPurchases);
-      totalCustomersEl.textContent = formatInteger(totalCustomers);
-      totalRevenueEl.textContent = formatCurrency(totalRevenue);
-      totalCategoriesEl.textContent = formatInteger(totalCategories);
-    }
-
-    function getDistinctCount(data, columnName) {
-      const values = data
-        .map(row => row[columnName])
-        .filter(value => value !== undefined && value !== null && value !== "");
-      return new Set(values).size;
-    }
-
-    function calculateTotalRevenue(items) {
-      let total = 0;
-      for (const row of items) {
-        const price = parseNumber(row.price);
-        const shipping = parseNumber(row.shipping_charges || row.freight_value);
-        total += price + shipping;
-      }
-      return total;
-    }
-
-    function buildMonthlyOrderVolume(orders) {
-      const monthMap = {};
-
-      for (const row of orders) {
-        const timestamp = row.order_purchase_timestamp;
-        if (!timestamp) continue;
-
-        const monthKey = String(timestamp).slice(0, 7);
-        monthMap[monthKey] = (monthMap[monthKey] || 0) + 1;
-      }
-
-      return sortObjectByMonth(monthMap);
-    }
-
-    function buildMonthlySales(orders, items) {
-      const orderToMonth = {};
-
-      for (const row of orders) {
-        if (!row.order_id || !row.order_purchase_timestamp) continue;
-        orderToMonth[row.order_id] = String(row.order_purchase_timestamp).slice(0, 7);
-      }
-
-      const salesMap = {};
-
-      for (const row of items) {
-        const orderId = row.order_id;
-        const monthKey = orderToMonth[orderId];
-        if (!monthKey) continue;
-
-        const price = parseNumber(row.price);
-        const shipping = parseNumber(row.shipping_charges || row.freight_value);
-        salesMap[monthKey] = (salesMap[monthKey] || 0) + price + shipping;
-      }
-
-      return sortObjectByMonth(salesMap);
-    }
-
-    function buildTopCategories(items, products) {
-      const productToCategory = {};
-
-      for (const row of products) {
-        if (!row.product_id) continue;
-        productToCategory[row.product_id] = row.product_category_name || "unknown";
-      }
-
-      const categoryCount = {};
-
-      for (const row of items) {
-        const category = productToCategory[row.product_id] || "unknown";
-        categoryCount[category] = (categoryCount[category] || 0) + 1;
-      }
-
-      const sortedEntries = Object.entries(categoryCount)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10);
-
-      return Object.fromEntries(sortedEntries);
-    }
-
-    function buildOrderingHeatmap(orders) {
-      const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-      const hours = Array.from({ length: 24 }, (_, i) => i);
-      const matrix = weekdays.map(() => Array(24).fill(0));
-
-      for (const row of orders) {
-        const timestamp = row.order_purchase_timestamp;
-        if (!timestamp) continue;
-
-        const normalized = String(timestamp).replace(" ", "T");
-        const date = new Date(normalized);
-        if (isNaN(date.getTime())) continue;
-
-        const jsDay = date.getDay();
-        const weekdayIndex = jsDay === 0 ? 6 : jsDay - 1;
-        const hour = date.getHours();
-
-        matrix[weekdayIndex][hour] += 1;
-      }
-
-      return { weekdays, hours, matrix };
-    }
-
-    function sortObjectByMonth(obj) {
-      return Object.fromEntries(
-        Object.entries(obj).sort((a, b) => a[0].localeCompare(b[0]))
+    document.getElementById("countrySelect").addEventListener("change", function () {
+      alert(
+        "Demo only: In the real product, selecting a country would load country-specific parameters, sources, review queue, ICER/BIA outputs, and negotiation scenarios."
       );
-    }
-
-    function renderOrderVolumeChart(monthMap) {
-      Plotly.newPlot(
-        "orderVolumeChart",
-        [{
-          x: Object.keys(monthMap),
-          y: Object.values(monthMap),
-          type: "scatter",
-          mode: "lines+markers",
-          hovertemplate: "Month: %{x}<br>Orders: %{y}<extra></extra>"
-        }],
-        {
-          margin: { l: 60, r: 20, t: 10, b: 50 },
-          paper_bgcolor: "white",
-          plot_bgcolor: "white",
-          showlegend: false,
-          xaxis: { title: "Month", gridcolor: "#eef2f7" },
-          yaxis: { title: "Orders", gridcolor: "#eef2f7" }
-        },
-        { responsive: true, displayModeBar: false }
-      );
-    }
-
-    function renderSalesByMonthChart(monthMap) {
-      Plotly.newPlot(
-        "salesByMonthChart",
-        [{
-          x: Object.keys(monthMap),
-          y: Object.values(monthMap).map(v => Math.round(v)),
-          type: "scatter",
-          mode: "lines+markers",
-          hovertemplate: "Month: %{x}<br>Sales: $%{y:,}<extra></extra>"
-        }],
-        {
-          margin: { l: 60, r: 20, t: 10, b: 50 },
-          paper_bgcolor: "white",
-          plot_bgcolor: "white",
-          showlegend: false,
-          xaxis: { title: "Month", gridcolor: "#eef2f7" },
-          yaxis: { title: "Sales ($)", gridcolor: "#eef2f7" }
-        },
-        { responsive: true, displayModeBar: false }
-      );
-    }
-
-    function renderTopCategoriesChart(categoryMap) {
-      const entries = Object.entries(categoryMap);
-      const labels = entries.map(entry => formatCategoryLabel(entry[0])).reverse();
-      const values = entries.map(entry => entry[1]).reverse();
-
-      Plotly.newPlot(
-        "topCategoriesChart",
-        [{
-          x: values,
-          y: labels,
-          type: "bar",
-          orientation: "h",
-          hovertemplate: "%{y}<br>Orders: %{x}<extra></extra>"
-        }],
-        {
-          margin: { l: 180, r: 20, t: 10, b: 50 },
-          paper_bgcolor: "white",
-          plot_bgcolor: "white",
-          xaxis: { title: "Order Count", gridcolor: "#eef2f7" },
-          yaxis: { automargin: true }
-        },
-        { responsive: true, displayModeBar: false }
-      );
-    }
-
-    function renderHeatmapChart(heatmapData) {
-      Plotly.newPlot(
-        "heatmapChart",
-        [{
-          z: heatmapData.matrix,
-          x: heatmapData.hours,
-          y: heatmapData.weekdays,
-          type: "heatmap",
-          hovertemplate: "Day: %{y}<br>Hour: %{x}:00<br>Orders: %{z}<extra></extra>"
-        }],
-        {
-          margin: { l: 70, r: 20, t: 10, b: 50 },
-          paper_bgcolor: "white",
-          plot_bgcolor: "white",
-          xaxis: { title: "Hour of Day", dtick: 1 },
-          yaxis: { title: "Day of Week" }
-        },
-        { responsive: true, displayModeBar: false }
-      );
-    }
-
-    function parseNumber(value) {
-      const num = parseFloat(value);
-      return isNaN(num) ? 0 : num;
-    }
-
-    function formatInteger(value) {
-      return Number(value || 0).toLocaleString();
-    }
-
-    function formatCurrency(value) {
-      return "$" + Number(value || 0).toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0
-      });
-    }
-
-    function formatCategoryLabel(text) {
-      if (!text) return "unknown";
-      return String(text)
-        .split("_")
-        .join(" ")
-        .replace(/\b\w/g, c => c.toUpperCase());
-    }
+    });
   </script>
 </body>
 </html>
